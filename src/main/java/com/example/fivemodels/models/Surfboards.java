@@ -4,13 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Surfboards {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Поле обязательно для заполнения")
     private String name, model, brand;
+    @NotNull(message = "Поле обязательно для заполнения")
+    @Min(value = 0, message = "Значение не может быть отрицательным")
     private Double size_height, size_width;
 
     public Surfboards(String name, String model, String brand, Double size_height, Double size_width) {

@@ -17,53 +17,90 @@
         <h1 class="fw-bold">Доски для серфинга</h1>
 
         <div style="margin-top: 15px; margin-bottom: 15px">
-            <form class="card" style="padding: 10px;" th:action="@{/surfboard}" method="POST" >
-                <h4 class="fw-bold" style="color: #0d6efd">Добавить запись</h4>
-                <br/>
-                <div class="mb-3 row g-3 align-items-center">
-                    <div class="col-auto">
-                        <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Название:</label>
-                    </div>
+            <form class="card" style="padding: 10px;" th:object="${surfboards}" th:action="@{/surfboards}" method="POST" >
+                <div class="row g-3 align-items-center">
+                    <h4 class="fw-bold container-fluid col-md" style="color: #0d6efd">Добавить запись</h4>
                     <div class="col-auto container-fluid col-md">
-                        <input type="text" name="name" class="form-control" th:value="${name}" placeholder="...">
+                        <a id="myBtn" style="float: right; width: 100px;" class="btn btn-primary">Добавить</a>
                     </div>
                 </div>
-                <div class="mb-3 row g-3 align-items-center">
-                    <div class="col-auto">
-                        <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Модель:</label>
+                <div id="mypopup" class="close">
+                    <br/>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Название:</label>
+                        </div>
+                        <div class="col-auto container-fluid col-md">
+                            <input type="text" name="name" class="form-control" th:field="*{name}" placeholder="...">
+                        </div>
                     </div>
-                    <div class="col-auto container-fluid col-md">
-                        <input type="text" name="model" class="form-control" th:value="${model}" placeholder="...">
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
                     </div>
+                    <div th:if="${#fields.hasErrors('global')}" class="mb-3 row g-3 align-items-center">
+                        <div th:each="err : ${#fields.errors('global')}" th:text="${err}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Модель:</label>
+                        </div>
+                        <div class="col-auto container-fluid col-md">
+                            <input type="text" name="model" class="form-control" th:field="*{model}" placeholder="...">
+                        </div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div th:if="${#fields.hasErrors('model')}" th:errors="*{model}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Бренд:</label>
+                        </div>
+                        <div class="col-auto container-fluid col-md">
+                            <input type="text" name="brand" class="form-control" th:field="*{brand}" placeholder="...">
+                        </div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Высота:</label>
+                        </div>
+                        <div class="col-auto container-fluid col-md">
+                            <input type="text" name="size_height" class="form-control" th:field="*{size_height}" placeholder="...">
+                        </div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div th:if="${#fields.hasErrors('size_height')}" th:errors="*{size_height}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Ширина:</label>
+                        </div>
+                        <div class="col-auto container-fluid col-md">
+                            <input type="text" name="size_width" class="form-control" th:field="*{size_width}" placeholder="...">
+                        </div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div th:if="${#fields.hasErrors('size_width')}" th:errors="*{size_width}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
                 </div>
-                <div class="mb-3 row g-3 align-items-center">
-                    <div class="col-auto">
-                        <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Бренд:</label>
-                    </div>
-                    <div class="col-auto container-fluid col-md">
-                        <input type="text" name="brand" class="form-control" th:value="${brand}" placeholder="...">
-                    </div>
-                </div>
-                <div class="mb-3 row g-3 align-items-center">
-                    <div class="col-auto">
-                        <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Высота:</label>
-                    </div>
-                    <div class="col-auto container-fluid col-md">
-                        <input type="text" name="size_height" class="form-control" th:value="${height}" placeholder="...">
-                    </div>
-                </div>
-                <div class="mb-3 row g-3 align-items-center">
-                    <div class="col-auto">
-                        <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Ширина:</label>
-                    </div>
-                    <div class="col-auto container-fluid col-md">
-                        <input type="text" name="size_width" class="form-control" th:value="${width}" placeholder="...">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Добавить</button>
             </form>
         </div>
-
+        <form method="post" th:action="@{/surfboards/search}">
+            <div class="mb-3 row g-3 align-items-center" style="padding-left: 11px; padding-right: 11px;">
+                <div class="col-auto">
+                    <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Поиск по бренду:</label>
+                </div>
+                <div class="col-auto container-fluid col-md">
+                    <input type="text" name="search" class="form-control" th:value="${search}" placeholder="...">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Поиск</button>
+                </div>
+            </div>
+        </form>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -73,19 +110,22 @@
                     <th scope="col">Бренд</th>
                     <th scope="col">Высота</th>
                     <th scope="col">Ширина</th>
+                    <th scope="col">Действия</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="el : ${surfboards}">
+                <tr th:each="el : ${surfboard}">
                     <th scope="row" th:text="${el.id}"></th>
                     <td th:text="${el.name}"></td>
                     <td th:text="${el.model}"></td>
                     <td th:text="${el.brand}"></td>
                     <td th:text="${el.size_height}"></td>
                     <td th:text="${el.size_width}"></td>
+                    <td><a th:href="'/surfboards/' + ${el.id}" class="btn btn-primary">...</a></td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <script type="text/javascript" th:src="@{/js/move.js}" src="../static/js/move.js"></script>
 </body>
 </html>

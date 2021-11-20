@@ -13,39 +13,67 @@
     <div th:replace="header :: myheader"></div>
 </head>
 <body>
-<div class="mb-3" style="padding-left: 5rem; padding-right: 5rem;">
-    <h1 class="fw-bold">Бренды</h1>
+    <div class="mb-3" style="padding-left: 5rem; padding-right: 5rem;">
+        <h1 class="fw-bold">Бренды</h1>
 
-    <div style="margin-top: 15px; margin-bottom: 15px">
-        <form class="card" style="padding: 10px;" th:action="@{/brands}" method="POST" >
-            <h4 class="fw-bold" style="color: #0d6efd">Добавить запись</h4>
-            <br/>
-            <div class="mb-3 row g-3 align-items-center">
-                <div class="col-auto">
-                    <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Название:</label>
-                </div>
+        <div style="margin-top: 15px; margin-bottom: 15px">
+        <form class="card" style="padding: 10px;" th:object="${brand}" th:action="@{/brands}" method="POST" >
+            <div class="row g-3 align-items-center">
+                <h4 class="fw-bold container-fluid col-md" style="color: #0d6efd">Добавить запись</h4>
                 <div class="col-auto container-fluid col-md">
-                    <input type="text" name="name" class="form-control" th:value="${name}" placeholder="...">
+                    <a id="myBtn" style="float: right; width: 100px;" class="btn btn-primary">Добавить</a>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Добавить</button>
+                <div id="mypopup" class="close">
+                    <br/>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Название:</label>
+                        </div>
+                        <div class="col-auto container-fluid col-md">
+                            <input type="text" name="name" class="form-control" th:field="*{name}" placeholder="...">
+                        </div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <div th:if="${#fields.hasErrors('global')}" class="mb-3 row g-3 align-items-center">
+                        <div th:each="err : ${#fields.errors('global')}" th:text="${err}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
+        </div>
+        <form method="post" th:action="@{/brands/search}">
+            <div class="mb-3 row g-3 align-items-center" style="padding-left: 11px; padding-right: 11px;">
+                <div class="col-auto">
+                    <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Поиск по названию:</label>
+                </div>
+                <div class="col-auto container-fluid col-md">
+                    <input type="text" name="search" class="form-control" th:value="${search}" placeholder="...">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Поиск</button>
+                </div>
+            </div>
         </form>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Название</th>
+                <th scope="col">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="el : ${brands}">
+                <th scope="row" th:text="${el.id}"></th>
+                <td th:text="${el.name}"></td>
+                <td><a th:href="'/brands/' + ${el.id}" class="btn btn-primary">...</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Название</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="el : ${brands}">
-            <th scope="row" th:text="${el.id}"></th>
-            <td th:text="${el.name}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <script type="text/javascript" th:src="@{/js/move.js}" src="../static/js/move.js"></script>
 </body>
 </html>

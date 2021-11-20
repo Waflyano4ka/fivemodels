@@ -4,14 +4,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Wax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Поле обязательно для заполнения")
     private String name;
-    private Double temperature, weight;
+    @NotNull(message = "Поле обязательно для заполнения")
+    @Min(value = 0, message = "Значение не может быть отрицательным")
+    private Double weight;
+    @NotNull(message = "Поле обязательно для заполнения")
+    private Double temperature;
 
     public Wax(String name, Double temperature, Double weight) {
         this.name = name;

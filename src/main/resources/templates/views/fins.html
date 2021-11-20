@@ -13,53 +13,84 @@
     <div th:replace="header :: myheader"></div>
 </head>
 <body>
-<div class="mb-3" style="padding-left: 5rem; padding-right: 5rem;">
-    <h1 class="fw-bold">Бренды</h1>
+    <div class="mb-3" style="padding-left: 5rem; padding-right: 5rem;">
+        <h1 class="fw-bold">Плавники для серфа</h1>
 
-    <div style="margin-top: 15px; margin-bottom: 15px">
-        <form class="card" style="padding: 10px;" th:action="@{/fins}" method="POST" >
-            <h4 class="fw-bold" style="color: #0d6efd">Добавить запись</h4>
-            <br/>
-            <div class="mb-3 row g-3 align-items-center">
+        <div style="margin-top: 15px; margin-bottom: 15px">
+            <form class="card" style="padding: 10px;" th:object="${fin}" th:action="@{/fins}" method="POST" >
+                <div class="row g-3 align-items-center">
+                    <h4 class="fw-bold container-fluid col-md" style="color: #0d6efd">Добавить запись</h4>
+                    <div class="col-auto container-fluid col-md">
+                        <a id="myBtn" style="float: right; width: 100px;" class="btn btn-primary">Добавить</a>
+                    </div>
+                </div>
+                <div id="mypopup" class="close">
+                    <br/>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Название:</label>
+                        </div>
+                        <div class="col-auto container-fluid col-md">
+                            <input type="text" name="name" class="form-control" th:field="*{name}" placeholder="...">
+                        </div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <div th:if="${#fields.hasErrors('global')}" class="mb-3 row g-3 align-items-center">
+                        <div th:each="err : ${#fields.errors('global')}" th:text="${err}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Размер:</label>
+                        </div>
+                        <div class="col-auto container-fluid col-md">
+                            <select name="size" class="form-select" th:filed="size" th:field="*{size}" aria-label="Default select example">
+                                <option th:value="M" th:selected="${size.equals('M')}">M</option>
+                                <option th:value="L" th:selected="${size.equals('L')}">L</option>
+                                <option th:value="S" th:selected="${size.equals('S')}">S</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <div th:if="${#fields.hasErrors('size')}" th:errors="*{size}" style="color: red; margin-left: 220px;" class="fw-bold"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
+        </div>
+        <form method="post" th:action="@{/fins/search}">
+            <div class="mb-3 row g-3 align-items-center" style="padding-left: 11px; padding-right: 11px;">
                 <div class="col-auto">
-                    <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Название:</label>
+                    <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Поиск по названию:</label>
                 </div>
                 <div class="col-auto container-fluid col-md">
-                    <input type="text" name="name" class="form-control" th:value="${name}" placeholder="...">
+                    <input type="text" name="search" class="form-control" th:value="${search}" placeholder="...">
                 </div>
-            </div>
-            <div class="mb-3 row g-3 align-items-center">
                 <div class="col-auto">
-                    <label style="float: left; margin-left: 5px; width: 200px;" class="form-label fw-bold">Размер:</label>
-                </div>
-                <div class="col-auto container-fluid col-md">
-                    <select name="size" class="form-select" th:filed="size" aria-label="Default select example">
-                        <option th:value="M" th:selected="${size.equals('M')}">M</option>
-                        <option th:value="L" th:selected="${size.equals('L')}">L</option>
-                        <option th:value="S" th:selected="${size.equals('S')}">S</option>
-                    </select>
+                    <button type="submit" class="btn btn-primary">Поиск</button>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Добавить</button>
         </form>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Название</th>
+                <th scope="col">Размер</th>
+                <th scope="col">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="el : ${fins}">
+                <th scope="row" th:text="${el.id}"></th>
+                <td th:text="${el.name}"></td>
+                <td th:text="${el.size}"></td>
+                <td><a th:href="'/fins/' + ${el.id}" class="btn btn-primary">...</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Название</th>
-            <th scope="col">Размер</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="el : ${fins}">
-            <th scope="row" th:text="${el.id}"></th>
-            <td th:text="${el.name}"></td>
-            <td th:text="${el.size}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <script type="text/javascript" th:src="@{/js/move.js}" src="../static/js/move.js"></script>
 </body>
 </html>

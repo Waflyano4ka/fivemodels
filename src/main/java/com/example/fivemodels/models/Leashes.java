@@ -4,13 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Leashes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Поле обязательно для заполнения")
     private String name, brand;
+    @NotNull(message = "Поле обязательно для заполнения")
+    @Min(value = 0, message = "Значение не может быть отрицательным")
     private Double size;
 
     public Leashes(String name, String brand, Double size) {
